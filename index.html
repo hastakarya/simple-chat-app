@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Apps</title>
+    <style>
+        form {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background: gray;
+            padding: 20px;
+        }
+
+        input {
+            float: left;
+            width: 70%;
+            height: 30px;
+            border: none;
+        }
+
+        button {
+            float: left;
+            width: 20%;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="messages"></ul>
+    <form>
+        <input id="text_box" type="text"> <button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var socket = io();
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+            socket.emit('newMessage', $('#text_box').val());
+            $('#text_box').val('');
+        });
+
+        socket.on('newMessage', function (messages) {
+            $('#messages').append($('<li>').text(messages));
+        });
+    </script>
+</body>
+
+</html>
